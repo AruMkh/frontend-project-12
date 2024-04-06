@@ -24,12 +24,14 @@ const ChatBox = () => {
       );
 
     case statuses.loadError:
+      window.location.href = '/login';
       return <LoginPage />;
 
     case statuses.loading:
       return <LoadingSpinner />;
 
     default:
+      window.location.href = '/login';
       return <LoginPage />;
   }
 };

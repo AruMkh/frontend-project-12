@@ -26,11 +26,12 @@ const ChatPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // eslint-disable-next-line consistent-return
     const fetchData = async () => {
       try {
         dispatch(fetchDataThunk(authHeaders));
       } catch (error) {
+        // eslint-disable-next-line
+        console.log(error, 'error');
         toast.error(t('errors.invalidFeedback'));
       }
     };
