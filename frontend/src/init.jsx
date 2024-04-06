@@ -15,7 +15,7 @@ import { actions as messagesActions } from './slices/messagesSlice';
 import { actions as channelsActions } from './slices/channelsSlice';
 
 const init = async () => {
-  const socket = io();
+  const socket = io.connect();
 
   socket.on('newMessage', (message) => {
     store.dispatch(messagesActions.addMessage(message));
