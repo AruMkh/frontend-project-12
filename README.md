@@ -16,17 +16,12 @@ has corresponding alert (implemented with toastify). Program uses routing to giv
 
 ## Installation
 
-To install this project, use following commands:
+To install this project & run, use following commands:
 ```bash
 git clone https://github.com/AruMkh/frontend-project-12
 cd frontend-project-12
 make install
-```
-## Building (required for production)
-```bash
 npm run build
-```
-## Launching locally (building not required)
-```bash
 npm start
 ```
+
