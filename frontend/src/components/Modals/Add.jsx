@@ -9,7 +9,10 @@ import filter from 'leo-profanity';
 import { useSocket } from '../../hooks';
 import { newChannelSchema } from '../../validation/validationSchema';
 import { actions as modalsActions } from '../../slices/modalSlice';
-import { selectors as channelsSelectors } from '../../slices/channelsSlice';
+import {
+  selectors as channelsSelectors,
+  actions as channelsActions,
+} from '../../slices/channelsSlice';
 
 const Add = () => {
   const { t } = useTranslation();
@@ -38,7 +41,9 @@ const Add = () => {
       const filteredValue = filter.clean(body);
 
       try {
-        await socket.addChannel({ name: filteredValue.trim() });
+        const channel = await socket.addChannel({ name: filteredValue.trim() });
+        dispatch(channelsActions.addChannel(channel));
+        dispatch(channelsActions.switchChannel({ id: channel.id }));
         dispatch(modalsActions.close());
         toast.success(t('success.newChannel'));
       } catch (error) {

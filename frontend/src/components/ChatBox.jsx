@@ -1,9 +1,11 @@
 import { useSelector } from 'react-redux';
 
-import LoginPage from './LoginPage';
 import ChannelsBox from './ChatChannelsBox';
 import MessagesBox from './ChatMessagesBox';
 import LoadingSpinner from './ChatLoadingSpinner';
+
+import { selectors as messagesSelectors } from '../slices/messagesSlice';
+import { selectors as channelsSelectors } from '../slices/channelsSlice';
 
 const statuses = {
   loading: 'loading',
@@ -13,24 +15,21 @@ const statuses = {
 
 const ChatBox = () => {
   const loadingStatus = useSelector((state) => state.channels.loadingStatus);
+  const channels = useSelector(channelsSelectors.selectAll);
+  const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
+  const currentMessages = useSelector(messagesSelectors.selectById);
 
   switch (loadingStatus) {
     case statuses.loaded:
       return (
         <>
-          <ChannelsBox />
-          <MessagesBox />
+          <ChannelsBox channels={channels} currentChannelId={currentChannel.id} />
+          <MessagesBox channel={currentChannel} messages={currentMessages} />
         </>
       );
 
-    case statuses.loadError:
-      return <LoginPage />;
-
-    case statuses.loading:
-      return <LoadingSpinner />;
-
     default:
-      return <LoginPage />;
+      return <LoadingSpinner />;
   }
 };
 

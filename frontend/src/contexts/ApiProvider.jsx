@@ -1,12 +1,7 @@
 import { useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-
 import { SocketContext } from './index';
-import { actions as channelsActions } from '../slices/channelsSlice';
 
 const ApiProvider = ({ socket, children }) => {
-  const dispatch = useDispatch();
-
   const sendMessage = useCallback(
     async (message) => {
       await socket.timeout(3000).emitWithAck('newMessage', message);
@@ -18,10 +13,9 @@ const ApiProvider = ({ socket, children }) => {
     async (channel) => {
       const { data } = await socket.timeout(3000).emitWithAck('newChannel', channel);
 
-      dispatch(channelsActions.addChannel(data));
-      dispatch(channelsActions.switchChannel({ id: data.id }));
+      return data;
     },
-    [socket, dispatch],
+    [socket],
   );
 
   const removeChannel = useCallback(

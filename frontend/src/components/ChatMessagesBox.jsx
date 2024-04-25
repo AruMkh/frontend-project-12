@@ -1,30 +1,25 @@
 import { Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef } from 'react';
 
 import Message from './ChatMessage';
 import MessageForm from './ChatMessageForm';
 
-import { selectors as messagesSelectors } from '../slices/messagesSlice';
-import { selectors as channelsSelectors } from '../slices/channelsSlice';
 import { useFilter, useAuth } from '../hooks';
 
-const MessagesBox = () => {
+const MessagesBox = ({ channel, messages }) => {
   const { t } = useTranslation();
   const messagesRef = useRef(null);
-  const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
-  const currentMessages = useSelector(messagesSelectors.selectById);
   const filterProfanity = useFilter();
   const { currentUser } = useAuth();
 
-  const channelName = filterProfanity(currentChannel.name);
+  const channelName = filterProfanity(channel.name);
 
   useEffect(() => {
     if (messagesRef.current) {
       messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight);
     }
-  }, [currentMessages]);
+  }, [messages]);
 
   return (
     <Col className="p-0 h-100">
@@ -37,12 +32,12 @@ const MessagesBox = () => {
             </b>
           </p>
           <span className="text-muted">
-            {t('messagesCounter.messages', { count: currentMessages.length })}
+            {t('messagesCounter.messages', { count: messages.length })}
           </span>
         </div>
 
         <div ref={messagesRef} className="chat-messages overflow-auto px-5">
-          {currentMessages.map((message) => (
+          {messages.map((message) => (
             <Message key={message.id} message={message} currentUser={currentUser} />
           ))}
         </div>

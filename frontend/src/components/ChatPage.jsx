@@ -21,23 +21,22 @@ const ChatPage = () => {
   const socket = useSocket();
   const dispatch = useDispatch();
   const modalType = useSelector(modalsSelectors.selectModalType);
-  const { currentUser } = useAuth();
+  const { currentUser, logOut } = useAuth();
   const authHeaders = useMemo(() => ({ headers: getAuthHeader(currentUser) }), [currentUser]);
   const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        dispatch(fetchDataThunk(authHeaders));
-      } catch (error) {
-        // eslint-disable-next-line
-        console.log(error, 'error');
+      const res = await dispatch(fetchDataThunk(authHeaders));
+
+      if (res.payload.errorCode === 401) {
         toast.error(t('errors.invalidFeedback'));
+        logOut();
       }
     };
 
     fetchData();
-  }, [dispatch, socket, t, authHeaders]);
+  }, [dispatch, socket, t, authHeaders, logOut]);
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">

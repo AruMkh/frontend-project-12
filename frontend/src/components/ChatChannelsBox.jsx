@@ -1,18 +1,15 @@
 import { useRef, useEffect } from 'react';
 import { Col, Nav } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { selectors as channelsSelectors } from '../slices/channelsSlice';
 import { actions as modalsActions } from '../slices/modalSlice';
 
 import Channel from './ChatChannel';
 
-const ChannelsBox = () => {
+const ChannelsBox = ({ channels, currentChannelId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const channels = useSelector(channelsSelectors.selectAll);
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const channelRef = useRef(null);
   const defaultChannelId = 1;
 
