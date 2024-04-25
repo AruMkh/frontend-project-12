@@ -22,6 +22,6 @@ git clone https://github.com/AruMkh/frontend-project-12
 cd frontend-project-12
 make install
 npm run build
-npm start
+make start
 ```
 
